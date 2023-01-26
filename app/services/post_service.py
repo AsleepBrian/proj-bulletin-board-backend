@@ -13,7 +13,7 @@ class PostService:
         if post is None:
             raise HTTPException(status.HTTP_404_NOT_FOUND)
         
-        return self.post_repo.get(id)
+        return post
 
     def create_post(self, post: PostCreate):
         return self.post_repo.save(post)

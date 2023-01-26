@@ -17,6 +17,7 @@ class PostUpdate(PostBase):
 
 class Post(PostBase):
     id: int
+    comments: list[str] | None = None
 
 
 class PostMeta(BaseModel):

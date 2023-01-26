@@ -15,12 +15,17 @@ class PostRepo:
         result: models.Post = self.db.query(models.Post).filter_by(id=id).first()
         if result is None:
             return None
+
+        comments = []
+        for comment in result.comment:
+            comments.append(comment.content)
         
         return schemas.Post(
             id=id,
             subject=result.subject,
             content=result.content,
-            password=result.password
+            password=result.password,
+            comments=comments
         )
 
     def save(self, post: schemas.PostCreate):
