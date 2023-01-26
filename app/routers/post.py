@@ -11,6 +11,11 @@ def create_post(post: PostCreate, post_service: PostService = Depends()):
     return post_service.create_post(post)
 
 
+@router.get("/search")
+def search_post(keyword: str, page: int, post_service: PostService = Depends()):
+    return post_service.search_post(keyword, page)
+
+
 @router.get("/{id}")
 def read_post(id: int, post_service: PostService = Depends()):
     return post_service.read_post(id)

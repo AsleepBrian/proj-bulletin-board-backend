@@ -17,3 +17,8 @@ class PostUpdate(PostBase):
 
 class Post(PostBase):
     id: int
+
+
+class PostMeta(BaseModel):
+    id: str
+    subject: str

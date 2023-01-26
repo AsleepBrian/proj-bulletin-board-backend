@@ -29,3 +29,6 @@ class PostService:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED)
 
         return self.post_repo.delete(id)
+
+    def search_post(self, keyword: str, page: int):
+        return self.post_repo.search(keyword, page)
