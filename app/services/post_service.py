@@ -22,13 +22,13 @@ class PostService:
         if self.read_post(id).password != post.password:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED)
 
-        return self.post_repo.update(post, id)
+        self.post_repo.update(post, id)
 
     def delete_post(self, id: int, password: str):
         if self.read_post(id).password != password:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED)
 
-        return self.post_repo.delete(id)
+        self.post_repo.delete(id)
 
     def search_post(self, keyword: str, page: int):
         return self.post_repo.search(keyword, page)

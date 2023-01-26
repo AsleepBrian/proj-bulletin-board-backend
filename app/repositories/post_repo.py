@@ -24,15 +24,16 @@ class PostRepo:
         )
 
     def save(self, post: schemas.PostCreate):
-        post = models.Post(
+        post_model = models.Post(
             subject=post.subject,
             content=post.content,
             password=post.password
         )
-        self.db.add(post)
+        self.db.add(post_model)
+        self.db.flush()
         self.db.commit()
 
-        return post
+        return post_model.id
 
     def update(self, post: schemas.PostUpdate, id:int):
         self.db.query(models.Post)\
@@ -45,7 +46,6 @@ class PostRepo:
         )
         self.db.commit()
 
-        return post
 
     def delete(self, id:int):
         self.db.query(models.Post).filter_by(id=id).delete()

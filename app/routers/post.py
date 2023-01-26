@@ -3,12 +3,12 @@ from fastapi import APIRouter, Header, Depends
 from services.post_service import PostService
 from repositories.schemas import PostCreate, PostUpdate
 
-router = APIRouter(prefix="/posts")
+router = APIRouter(prefix="/post")
 
 
 @router.post("/create")
 def create_post(post: PostCreate, post_service: PostService = Depends()):
-    return post_service.create_post(post)
+    return {"id": post_service.create_post(post)}
 
 
 @router.get("/search")
@@ -23,9 +23,11 @@ def read_post(id: int, post_service: PostService = Depends()):
 
 @router.post("/{id}/update")
 def update_post(id: int, post: PostUpdate, post_service: PostService = Depends()):
-    return post_service.update_post(post, id)
+    post_service.update_post(post, id)
+    return {"detail": "success"}
 
 
 @router.delete("/{id}/delete")
 def delete_post(id: int, password: str, post_service: PostService = Depends()):
-    return post_service.delete_post(id, password)
+    post_service.delete_post(id, password)
+    return {"detail": "success"}
