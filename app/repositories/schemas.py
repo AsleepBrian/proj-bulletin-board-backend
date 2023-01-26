@@ -17,8 +17,14 @@ class PostUpdate(PostBase):
 
 class Post(PostBase):
     id: int
+    comments: list[str] | None = None
 
 
 class PostMeta(BaseModel):
     id: str
     subject: str
+
+
+class Comment(BaseModel):
+    post_id: int
+    content: str
