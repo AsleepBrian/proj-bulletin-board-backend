@@ -11,5 +11,9 @@ class PostCreate(PostBase):
     pass
 
 
+class PostUpdate(PostBase):
+    id: int
+
+
 class Post(PostBase):
     id: int

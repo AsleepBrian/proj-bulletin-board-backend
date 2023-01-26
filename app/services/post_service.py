@@ -1,7 +1,7 @@
 from fastapi import Depends
 
 from repositories.post_repo import PostRepo
-from repositories.schemas import PostCreate
+from repositories.schemas import PostCreate, PostUpdate
 
 
 class PostService:
@@ -10,3 +10,6 @@ class PostService:
 
     def create_post(self, post: PostCreate):
         return self.post_repo.save(post)
+
+    def update_post(self, post: PostUpdate):
+        return self.post_repo.update(post)
