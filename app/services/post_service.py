@@ -9,6 +9,10 @@ class PostService:
         self.post_repo = post_repo
 
     def read_post(self, id: int) -> Post:
+        post = self.post_repo.get(id)
+        if post is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND)
+        
         return self.post_repo.get(id)
 
     def create_post(self, post: PostCreate):
@@ -18,4 +22,13 @@ class PostService:
         if self.read_post(id).password != post.password:
             raise HTTPException(status.HTTP_401_UNAUTHORIZED)
 
-        return self.post_repo.update(post, id)
+        self.post_repo.update(post, id)
+
+    def delete_post(self, id: int, password: str):
+        if self.read_post(id).password != password:
+            raise HTTPException(status.HTTP_401_UNAUTHORIZED)
+
+        self.post_repo.delete(id)
+
+    def search_post(self, keyword: str, page: int):
+        return self.post_repo.search(keyword, page)
