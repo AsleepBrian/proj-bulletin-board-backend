@@ -11,6 +11,6 @@ def create_post(post: PostCreate, post_service: PostService = Depends()):
     return post_service.create_post(post)
 
 
-@router.post("/update")
-def update_post(post: PostUpdate, post_service: PostService = Depends()):
-    return post_service.update_post(post)
+@router.post("/{id}/update")
+def update_post(id: int, post: PostUpdate, post_service: PostService = Depends()):
+    return post_service.update_post(post, id)

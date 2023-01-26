@@ -12,7 +12,7 @@ class PostCreate(PostBase):
 
 
 class PostUpdate(PostBase):
-    id: int
+    pass
 
 
 class Post(PostBase):

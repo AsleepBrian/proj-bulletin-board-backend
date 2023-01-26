@@ -2,16 +2,24 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from common.database import get_db
-from repositories.models import Post
-from repositories.schemas import PostCreate, PostUpdate
+from repositories import models, schemas
 
 
 class PostRepo:
     def __init__(self, db: Session = Depends(get_db)):
         self.db = db
 
-    def save(self, post: PostCreate):
-        post = Post(
+    def get(self, id: int):
+        post: models.Post = self.db.query(models.Post).filter_by(id=id).first()
+        return schemas.Post(
+            id=id,
+            subject=post.subject,
+            content=post.content,
+            password=post.password
+        )
+
+    def save(self, post: schemas.PostCreate):
+        post = models.Post(
             subject=post.subject,
             content=post.content,
             password=post.password
@@ -21,9 +29,9 @@ class PostRepo:
 
         return post
 
-    def update(self, post: PostUpdate):
-        self.db.query(Post)\
-            .filter_by(id=post.id)\
+    def update(self, post: schemas.PostUpdate, id:int):
+        self.db.query(models.Post)\
+            .filter_by(id=id)\
             .update(
             {
                 "subject": post.subject,
