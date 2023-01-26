@@ -4,23 +4,13 @@ from sqlalchemy.orm import relationship, backref
 from common.database import Base, engine
 
 
-class User(Base):
-    __tablename__ = "user"
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-
-
 class Post(Base):
     __tablename__ = "post"
 
     id = Column(Integer, primary_key=True)
     subject = Column(String, nullable=False)
     content = Column(Text, nullable=False)
-    user_id = Column(Integer, ForeignKey("user.id"))
-    user = relationship("User", backref="post")
-
+    password = Column(String, nullable=False)
 
 class Comment(Base):
     __tablename__ = "comment"
