@@ -17,3 +17,7 @@ class CommentRepo:
         self.db.add(comment_model)
         self.db.flush()
         self.db.commit()
+
+    def delete(self, post_id: int):
+        self.db.query(models.Comment).filter_by(post_id=post_id).delete()
+        self.db.commit()

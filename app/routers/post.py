@@ -35,6 +35,7 @@ def create_comment(comment: Comment, comment_service: CommentService = Depends()
 
 
 @router.delete("/{id}/delete")
-def delete_post(id: int, password: str, post_service: PostService = Depends()):
+def delete_post(id: int, password: str, post_service: PostService = Depends(), comment_service: CommentService = Depends()):
     post_service.delete_post(id, password)
+    comment_service.delete_comment(id)
     return {"detail": "success"}

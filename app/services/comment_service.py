@@ -10,3 +10,6 @@ class CommentService:
 
     def create_comment(self, comment: Comment):
         self.comment_repo.save(comment)
+
+    def delete_comment(self, post_id: int):
+        self.comment_repo.delete(post_id)
