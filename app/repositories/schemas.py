@@ -22,3 +22,8 @@ class Post(PostBase):
 class PostMeta(BaseModel):
     id: str
     subject: str
+
+
+class Comment(BaseModel):
+    post_id: int
+    content: str

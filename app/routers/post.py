@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Header, Depends
+from fastapi import APIRouter, Depends
 
 from services.post_service import PostService
-from repositories.schemas import PostCreate, PostUpdate
+from services.comment_service import CommentService
+from repositories.schemas import PostCreate, PostUpdate, Comment
 
 router = APIRouter(prefix="/post")
 
@@ -24,6 +25,12 @@ def read_post(id: int, post_service: PostService = Depends()):
 @router.post("/{id}/update")
 def update_post(id: int, post: PostUpdate, post_service: PostService = Depends()):
     post_service.update_post(post, id)
+    return {"detail": "success"}
+
+
+@router.post("/{id}/comment")
+def create_comment(comment: Comment, comment_service: CommentService = Depends()):
+    comment_service.create_comment(comment)
     return {"detail": "success"}
 
 
