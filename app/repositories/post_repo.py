@@ -11,6 +11,9 @@ class PostRepo:
 
     def get(self, id: int):
         post: models.Post = self.db.query(models.Post).filter_by(id=id).first()
+        if post is None:
+            return None
+        
         return schemas.Post(
             id=id,
             subject=post.subject,
@@ -41,3 +44,7 @@ class PostRepo:
         self.db.commit()
 
         return post
+
+    def delete(self, id:int):
+        self.db.query(models.Post).filter_by(id=id).delete()
+        self.db.commit()

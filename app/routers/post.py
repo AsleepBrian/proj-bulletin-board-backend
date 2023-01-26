@@ -11,6 +11,16 @@ def create_post(post: PostCreate, post_service: PostService = Depends()):
     return post_service.create_post(post)
 
 
+@router.get("/{id}")
+def read_post(id: int, post_service: PostService = Depends()):
+    return post_service.read_post(id)
+
+
 @router.post("/{id}/update")
 def update_post(id: int, post: PostUpdate, post_service: PostService = Depends()):
     return post_service.update_post(post, id)
+
+
+@router.delete("/{id}/delete")
+def delete_post(id: int, password: str, post_service: PostService = Depends()):
+    return post_service.delete_post(id, password)
