@@ -12,6 +12,7 @@ class Post(Base):
     content = Column(Text, nullable=False)
     password = Column(String, nullable=False)
 
+
 class Comment(Base):
     __tablename__ = "comment"
 
