@@ -13,7 +13,7 @@ def create_post(post: PostCreate, post_service: PostService = Depends()):
 
 
 @router.get("/search")
-def search_post(keyword: str, page: int, post_service: PostService = Depends()):
+def search_post(keyword: str, page: int = 0, post_service: PostService = Depends()):
     return post_service.search_post(keyword, page)
 
 
