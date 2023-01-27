@@ -14,11 +14,11 @@ class PostRepo:
     def get(self, id: int) -> schemas.Post:
         post_model: models.Post = self.db.query(models.Post).filter_by(id=id).first()
 
-        comments = []
-        for comment in post_model.comment:
-            comments.append(comment.content)
-
         try:
+            comments = []
+            for comment in post_model.comment:
+                comments.append(comment.content)
+
             post = schemas.Post(
                 id=id,
                 subject=post_model.subject,
