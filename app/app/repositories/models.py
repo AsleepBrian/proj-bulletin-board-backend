@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-from common.database import Base, engine
+from config.database import Base, engine
 
 
 class Post(Base):
@@ -11,6 +11,7 @@ class Post(Base):
     subject = Column(String, nullable=False)
     content = Column(Text, nullable=False)
     password = Column(String, nullable=False)
+
 
 class Comment(Base):
     __tablename__ = "comment"

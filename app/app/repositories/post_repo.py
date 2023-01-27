@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from common.database import get_db
+from config.database import get_db
 from repositories import models, schemas
 
 UNIT_PER_PAGE = 4
@@ -11,24 +11,27 @@ class PostRepo:
     def __init__(self, db: Session = Depends(get_db)):
         self.db = db
 
-    def get(self, id: int):
-        result: models.Post = self.db.query(models.Post).filter_by(id=id).first()
-        if result is None:
+    def get(self, id: int) -> schemas.Post:
+        post_model: models.Post = self.db.query(models.Post).filter_by(id=id).first()
+
+        try:
+            comments = []
+            for comment in post_model.comment:
+                comments.append(comment.content)
+
+            post = schemas.Post(
+                id=id,
+                subject=post_model.subject,
+                content=post_model.content,
+                password=post_model.password,
+                comments=comments
+            )
+        except:
             return None
-
-        comments = []
-        for comment in result.comment:
-            comments.append(comment.content)
+        else:
+            return post
         
-        return schemas.Post(
-            id=id,
-            subject=result.subject,
-            content=result.content,
-            password=result.password,
-            comments=comments
-        )
-
-    def save(self, post: schemas.PostCreate):
+    def save(self, post: schemas.PostCreate) -> int:
         post_model = models.Post(
             subject=post.subject,
             content=post.content,
@@ -51,21 +54,20 @@ class PostRepo:
         )
         self.db.commit()
 
-
     def delete(self, id:int):
         self.db.query(models.Post).filter_by(id=id).delete()
         self.db.commit()
 
-    def search(self, keyword: str, page: int):
+    def search(self, keyword: str, page: int) -> list[schemas.PostMeta]:
         offset = page * UNIT_PER_PAGE
-        result = self.db.query(models.Post)\
+        post_model = self.db.query(models.Post)\
             .filter(models.Post.subject.like(f"%{keyword}%"))\
             .order_by(models.Post.id)\
             .offset(offset)\
             .limit(UNIT_PER_PAGE)
 
         post_meta_list = []
-        for record in result:
+        for record in post_model:
             post_meta_list.append(
                 schemas.PostMeta(
                     id=record.id,

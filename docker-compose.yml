@@ -1,0 +1,15 @@
+services:
+  fastapi:
+    container_name: api
+    image: api
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+  # nginx:
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile
+  #   ports:
+  #       - "80:80"
