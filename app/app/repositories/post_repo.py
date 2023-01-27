@@ -11,7 +11,7 @@ class PostRepo:
     def __init__(self, db: Session = Depends(get_db)):
         self.db = db
 
-    def get(self, id: int):
+    def get(self, id: int) -> schemas.Post:
         post_model: models.Post = self.db.query(models.Post).filter_by(id=id).first()
 
         comments = []
@@ -31,7 +31,7 @@ class PostRepo:
         else:
             return post
         
-    def save(self, post: schemas.PostCreate):
+    def save(self, post: schemas.PostCreate) -> int:
         post_model = models.Post(
             subject=post.subject,
             content=post.content,
@@ -58,7 +58,7 @@ class PostRepo:
         self.db.query(models.Post).filter_by(id=id).delete()
         self.db.commit()
 
-    def search(self, keyword: str, page: int):
+    def search(self, keyword: str, page: int) -> list[schemas.PostMeta]:
         offset = page * UNIT_PER_PAGE
         post_model = self.db.query(models.Post)\
             .filter(models.Post.subject.like(f"%{keyword}%"))\

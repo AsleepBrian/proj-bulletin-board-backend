@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 
 from repositories.post_repo import PostRepo
-from repositories.schemas import PostCreate, PostUpdate, Post
+from repositories.schemas import PostCreate, PostUpdate, Post, PostMeta
 
 
 class PostService:
@@ -15,7 +15,7 @@ class PostService:
         
         return post
 
-    def create_post(self, post: PostCreate):
+    def create_post(self, post: PostCreate) -> int:
         return self.post_repo.save(post)
 
     def update_post(self, post: PostUpdate, id: int):
@@ -30,5 +30,5 @@ class PostService:
 
         self.post_repo.delete(id)
 
-    def search_post(self, keyword: str, page: int):
+    def search_post(self, keyword: str, page: int) -> list[PostMeta]:
         return self.post_repo.search(keyword, page)
