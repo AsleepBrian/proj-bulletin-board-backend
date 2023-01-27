@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from common.database import get_db
+from config.database import get_db
 from repositories import models, schemas
 
 UNIT_PER_PAGE = 4

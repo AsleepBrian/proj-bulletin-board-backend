@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
-from common.database import Base, engine
+from config.database import Base, engine
 
 
 class Post(Base):
