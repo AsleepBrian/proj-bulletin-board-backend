@@ -12,22 +12,25 @@ class PostRepo:
         self.db = db
 
     def get(self, id: int):
-        result: models.Post = self.db.query(models.Post).filter_by(id=id).first()
-        if result is None:
-            return None
+        post_model: models.Post = self.db.query(models.Post).filter_by(id=id).first()
 
         comments = []
-        for comment in result.comment:
+        for comment in post_model.comment:
             comments.append(comment.content)
-        
-        return schemas.Post(
-            id=id,
-            subject=result.subject,
-            content=result.content,
-            password=result.password,
-            comments=comments
-        )
 
+        try:
+            post = schemas.Post(
+                id=id,
+                subject=post_model.subject,
+                content=post_model.content,
+                password=post_model.password,
+                comments=comments
+            )
+        except:
+            return None
+        else:
+            return post
+        
     def save(self, post: schemas.PostCreate):
         post_model = models.Post(
             subject=post.subject,
@@ -51,21 +54,20 @@ class PostRepo:
         )
         self.db.commit()
 
-
     def delete(self, id:int):
         self.db.query(models.Post).filter_by(id=id).delete()
         self.db.commit()
 
     def search(self, keyword: str, page: int):
         offset = page * UNIT_PER_PAGE
-        result = self.db.query(models.Post)\
+        post_model = self.db.query(models.Post)\
             .filter(models.Post.subject.like(f"%{keyword}%"))\
             .order_by(models.Post.id)\
             .offset(offset)\
             .limit(UNIT_PER_PAGE)
 
         post_meta_list = []
-        for record in result:
+        for record in post_model:
             post_meta_list.append(
                 schemas.PostMeta(
                     id=record.id,
