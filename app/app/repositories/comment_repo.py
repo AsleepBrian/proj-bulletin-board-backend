@@ -2,7 +2,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from config.database import get_db
-from repositories import models, schemas
+from repositories.models import models
+from services.schemas import schemas
 
 
 class CommentRepo:

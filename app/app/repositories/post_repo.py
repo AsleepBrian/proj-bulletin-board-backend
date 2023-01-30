@@ -2,7 +2,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from config.database import get_db
-from repositories import models, schemas
+from repositories.models import models
+from services.schemas import schemas
 
 UNIT_PER_PAGE = 4
 
@@ -43,9 +44,9 @@ class PostRepo:
 
         return post_model.id
 
-    def update(self, post: schemas.PostUpdate, id:int):
+    def update(self, post: schemas.PostUpdate):
         self.db.query(models.Post)\
-            .filter_by(id=id)\
+            .filter_by(id=post.id)\
             .update(
             {
                 "subject": post.subject,
