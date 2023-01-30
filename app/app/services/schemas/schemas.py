@@ -1,22 +1,23 @@
 from pydantic import BaseModel
 
 
-class PostBase(BaseModel):
+class PostCreate(BaseModel):
     subject: str
     content: str
     password: str
 
 
-class PostCreate(PostBase):
-    pass
-
-
-class PostUpdate(PostBase):
-    pass
-
-
-class Post(PostBase):
+class PostUpdate(BaseModel):
     id: int
+    subject: str
+    content: str
+
+
+class Post(BaseModel):
+    id: int
+    subject: str
+    content: str
+    password: str
     comments: list[str] | None = None
 
 
