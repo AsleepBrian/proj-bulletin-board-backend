@@ -57,6 +57,9 @@ class PostRepo:
     def delete(self, id:int):
         self.db.query(models.Post).filter_by(id=id).delete()
         self.db.commit()
+        
+        self.db.query(models.Comment).filter_by(post_id=id).delete()
+        self.db.commit()
 
     def search(self, keyword: str, page: int) -> list[schemas.PostMeta]:
         offset = page * UNIT_PER_PAGE
