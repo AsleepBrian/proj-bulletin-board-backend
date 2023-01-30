@@ -30,10 +30,18 @@ def read_post(id: int, post_service: PostService = Depends()):
     return post_service.read_post(id)
 
 
-@router.post("/{id}/update")
+@router.post("/{id}")
 def update_post(id: int, post: PostUpdate, post_service: PostService = Depends()):
     logger.info(f"body: id={id} {post}")
     post_service.update_post(post, id)
+    return {"detail": "success"}
+
+
+@router.delete("/{id}")
+def delete_post(id: int, password: str, post_service: PostService = Depends(), comment_service: CommentService = Depends()):
+    logger.info(f"body: id={id}, password={password}")
+    post_service.delete_post(id, password)
+    comment_service.delete_comment(id)
     return {"detail": "success"}
 
 
@@ -41,12 +49,4 @@ def update_post(id: int, post: PostUpdate, post_service: PostService = Depends()
 def create_comment(comment: Comment, comment_service: CommentService = Depends()):
     logger.info(f"body: {comment}")
     comment_service.create_comment(comment)
-    return {"detail": "success"}
-
-
-@router.delete("/{id}/delete")
-def delete_post(id: int, password: str, post_service: PostService = Depends(), comment_service: CommentService = Depends()):
-    logger.info(f"body: id={id}, password={password}")
-    post_service.delete_post(id, password)
-    comment_service.delete_comment(id)
     return {"detail": "success"}
